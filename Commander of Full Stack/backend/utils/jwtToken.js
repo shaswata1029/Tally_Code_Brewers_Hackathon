@@ -13,6 +13,7 @@ const sendToken = (user, statusCode, message, res) => {
 
   res.cookie("token", jwtToken, options);
 
+  console.log(user);
   res
     .status(statusCode)
     .json({ success: true, message: message, user, jwtToken });

@@ -3,7 +3,7 @@ import "./Header.css";
 
 import { useNavigate } from "react-router-dom";
 import { useAlert } from "react-alert";
-// import { logout } from "../../../actions/userAction";
+import { logout } from "../../../actions/userAction";
 import { useDispatch, useSelector } from "react-redux";
 
 import { SpeedDial, SpeedDialAction } from "@material-ui/lab";
@@ -15,8 +15,6 @@ import ListAltIcon from "@material-ui/icons/ListAlt";
 import ProfileImage from "../../../images/Profile.png";
 
 const UserOptions = ({ user }) => {
-  //   const { cartItems } = useSelector((state) => state.cart);
-
   const [open, setOpen] = useState(false);
   const naviagte = useNavigate();
   const alert = useAlert();
@@ -45,8 +43,8 @@ const UserOptions = ({ user }) => {
   }
 
   function logoutUser() {
-    // dispatch(logout());
-    // alert.success("Logout Successfull");
+    dispatch(logout());
+    alert.success("Logout Successfull");
   }
 
   return (

@@ -10,6 +10,10 @@ const quizSchema = new mongoose.Schema(
       type: String,
       default: "No Description",
     },
+    category: {
+      type: String,
+      required: [true, "Quiz category required"],
+    },
     status: {
       type: String,
       default: "draft",

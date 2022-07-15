@@ -39,7 +39,7 @@ module.exports.createQuestion = catchAsyncErrors(async (req, res, next) => {
   });
 
   return res.status(201).json({
-    status: "success",
+    success: "success",
     message: "Question created successfully",
     question,
   });
@@ -63,8 +63,8 @@ module.exports.getAllQuestions = catchAsyncErrors(async (req, res, next) => {
     .select("-correct");
 
   return res.status(200).json({
-    status: "success",
-    message: "Question successfully retrieved",
+    success: "success",
+    message: "Questions successfully retrieved",
     questions,
     author: quiz.author,
   });
@@ -80,10 +80,14 @@ module.exports.getAllQuestionsWithAnswers = catchAsyncErrors(
       return next(new ErrorHandler(`Quiz not found with id ${quizId}`, 404));
     }
 
+    if (quiz.author != req.user._id) {
+      return next(new ErrorHandler(`Quiz not allowed to access`, 403));
+    }
+
     const questions = await questionModel.find({ quiz: quizId });
 
     return res.status(200).json({
-      status: "success",
+      success: "success",
       message: "Question successfully retrieved",
       questions,
       author: quiz.author,

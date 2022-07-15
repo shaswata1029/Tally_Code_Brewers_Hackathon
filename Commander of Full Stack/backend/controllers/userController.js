@@ -42,7 +42,7 @@ module.exports.updatePassword = catchAsyncErrors(async (req, res, next) => {
 
 // Update user Profile
 module.exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
-  const userId = req.user.id;
+  const userId = req.user._id;
 
   const newUserData = {
     name: req.body.name,
@@ -79,7 +79,7 @@ module.exports.updateProfile = catchAsyncErrors(async (req, res, next) => {
     useFindAndModify: false,
   });
 
-  // console.log(user);
+  console.log(user);
   res
     .status(200)
     .json({ success: true, message: "User Profile updated successfully" });

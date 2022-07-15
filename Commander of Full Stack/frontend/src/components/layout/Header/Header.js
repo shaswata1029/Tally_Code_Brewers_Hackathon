@@ -4,7 +4,7 @@ import logo from "../../../images/logo.png";
 import { useSelector } from "react-redux";
 
 const Header = () => {
-  // const { isAuthenticated } = useSelector((state) => state.user);
+  const { isAuthenticated } = useSelector((state) => state.user);
 
   const options = {
     burgerColorHover: "#eb4034",
@@ -15,8 +15,7 @@ const Header = () => {
     logoHoverColor: "#eb4034",
     link1Text: "Home",
     link2Text: "Quizzes",
-    // link3Text: isAuthenticated ? "Account" : "Login",
-    link3Text: "Login",
+    link3Text: isAuthenticated ? "Account" : "Login",
     link4Text: "Dashboard",
     link1Url: "/",
     link2Url: "/quizzes",
