@@ -12,7 +12,7 @@ const {
 
 quizRouter.route("/create").post(isAuthenticated, createQuiz);
 quizRouter.route("/get/:quizId").get(getQuizDetails);
-quizRouter.route("/update/:quizId").put(updateQuiz);
-quizRouter.route("/delete/:quizId").delete(deleteQuiz);
+quizRouter.route("/update/:quizId").put(isAuthenticated, updateQuiz);
+quizRouter.route("/delete/:quizId").delete(isAuthenticated, deleteQuiz);
 
 module.exports = quizRouter;
