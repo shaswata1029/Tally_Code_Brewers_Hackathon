@@ -18,7 +18,7 @@ const Home = () => {
         <h1>CREATE QUIZZES AT YOUR COMFORT</h1>
 
         <a href="#container">
-          <Link to="/login">
+          <Link to="/quiz/create">
             <button>Create a Quiz</button>
           </Link>
         </a>

@@ -15,7 +15,13 @@ import {
   newQuestionReducer,
   adminQuestionsReducer,
   questionsReducer,
+  questionStatsReducer,
 } from "./reducers/questionReducer";
+
+import {
+  newResponseReducer,
+  responsesReducer,
+} from "./reducers/responseReducer";
 
 const reducer = combineReducers({
   user: userReducer,
@@ -27,6 +33,9 @@ const reducer = combineReducers({
   newQuestion: newQuestionReducer,
   adminQuestions: adminQuestionsReducer,
   questions: questionsReducer,
+  newResponse: newResponseReducer,
+  responses: responsesReducer,
+  questionStats: questionStatsReducer,
 });
 
 let initialState = {};

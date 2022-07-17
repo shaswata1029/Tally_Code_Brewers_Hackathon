@@ -15,15 +15,41 @@ const questionSchema = new mongoose.Schema(
       type: String,
       required: [true, "Correct option required"],
     },
+    marks: {
+      type: Number,
+      required: [true, "Question mark required"],
+      min: [1, "Marks should be greater than 0"],
+    },
     options: {
-      type: [{ value: String }],
+      type: [
+        {
+          value: String,
+          frequency: { type: Number, default: 0, select: false },
+        },
+      ],
       validate: [checkArrayLimit, "Options length should only be 4"],
     },
     author: {
       type: String,
-      required: [true, "A quiz needs an author."],
+      required: [true, "A question needs an author."],
+    },
+    totalResponses: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    totalCorrectResponses: {
+      type: Number,
+      default: 0,
+      select: false,
+    },
+    totalIncorrectResponses: {
+      type: Number,
+      default: 0,
+      select: false,
     },
   },
+
   {
     toJSON: { virtuals: true },
     toObject: { virtuals: true },

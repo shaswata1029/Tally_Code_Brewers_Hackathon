@@ -11,6 +11,8 @@ const corsOptions = {
   credentials: true,
 };
 
+app.set("trust proxy", true);
+
 // Gloabal middleware
 app.use(cors(corsOptions));
 app.use(express.json());

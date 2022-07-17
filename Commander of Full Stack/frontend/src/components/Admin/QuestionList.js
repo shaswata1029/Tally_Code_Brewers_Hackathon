@@ -17,8 +17,8 @@ import {
 
 import { Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
-import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
+import InsightsIcon from "@mui/icons-material/Insights";
+
 import "./QuizList.css";
 
 const QuestionList = () => {
@@ -31,35 +31,15 @@ const QuestionList = () => {
     (state) => state.adminQuestions
   );
 
-  //   const { error: deleteError, isDeleted } = useSelector(
-  //     (state) => state.product
-  //   );
-
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
+      navigate("/dashboard");
     }
-
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
-
-    // if (isDeleted) {
-    //   alert.success("Product Deleted Successfully");
-    //   navigate("/admin/dashboard");
-    //   dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
 
     dispatch(getAllQuestionsWithAnswers(quizId));
   }, [alert, dispatch, error, navigate, quizId]);
-
-  //   const deleteProductHandler = (id) => {
-  //     if (window.confirm("Are you sure you want to delete this product?")) {
-  //       dispatch(deleteProduct(id));
-  //     }
-  //   };
 
   const newQuestionHandler = (e) => {
     e.preventDefault();
@@ -112,6 +92,13 @@ const QuestionList = () => {
     },
 
     {
+      field: "marks",
+      headerName: "Correct Marks",
+      minWidth: 200,
+      flex: 0.3,
+    },
+
+    {
       field: "actions",
       flex: 0.3,
       headerName: "Actions",
@@ -125,14 +112,9 @@ const QuestionList = () => {
               <EditIcon />
             </Link>
 
-            <Button
-              onClick={
-                () => {}
-                // deleteProductHandler(params.getValue(params.id, "id"))
-              }
-            >
-              <DeleteIcon />
-            </Button>
+            <Link to={`/stats/${params.getValue(params.id, "id")}`}>
+              <InsightsIcon />
+            </Link>
           </>
         );
       },
@@ -151,6 +133,7 @@ const QuestionList = () => {
         option3: question.options[2].value,
         option4: question.options[3].value,
         correct: question.correct,
+        marks: question.marks,
       });
     });
 

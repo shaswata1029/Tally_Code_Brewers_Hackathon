@@ -17,10 +17,14 @@ import QuizList from "./components/Admin/QuizList";
 import UpdateQuiz from "./components/Admin/UpdateQuiz";
 import QuestionList from "./components/Admin/QuestionList";
 import NewQuestion from "./components/Admin/NewQuestion";
+import StartQuiz from "./components/Quiz/StartQuiz";
+import ResponseList from "./components/Admin/ResponseList";
+import QuestionStats from "./components/Admin/QuestionStats";
 
 import WebFont from "webfontloader";
 import store from "./store";
 import { loadUser } from "./actions/userAction";
+import { CLEAR_ERRORS } from "./constants/quizConstants";
 
 function App() {
   const { isAuthenticated, user, error } = useSelector((state) => state.user);
@@ -32,6 +36,7 @@ function App() {
       },
     });
 
+    store.dispatch({ type: CLEAR_ERRORS });
     store.dispatch(loadUser());
   }, []);
 
@@ -86,6 +91,20 @@ function App() {
               exact
               path="/question/create/:quizId"
               element={<NewQuestion />}
+            />
+          </Route>
+
+          <Route exact path="/responses" element={<ProtectedRoute />}>
+            <Route exact path="/responses" element={<ResponseList />} />
+          </Route>
+
+          <Route exact path="/start/quiz/:quizId" element={<StartQuiz />} />
+
+          <Route exact path="/stats/:questionId" element={<ProtectedRoute />}>
+            <Route
+              exact
+              path="/stats/:questionId"
+              element={<QuestionStats />}
             />
           </Route>
         </Routes>

@@ -9,6 +9,9 @@ import {
   ALL_QUESTION_REQUEST,
   ALL_QUESTION_SUCCESS,
   ALL_QUESTION_FAIL,
+  QUESTION_STATS_REQUEST,
+  QUESTION_STATS_SUCCESS,
+  QUESTION_STATS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/questionConstants";
 
@@ -87,6 +90,34 @@ export const questionsReducer = (state = { questions: [] }, action) => {
         questions: action.payload,
       };
     case ALL_QUESTION_FAIL:
+      return {
+        loading: false,
+        error: action.payload,
+      };
+
+    case CLEAR_ERRORS:
+      return {
+        ...state,
+        error: null,
+      };
+    default:
+      return state;
+  }
+};
+
+export const questionStatsReducer = (state = { questionStats: {} }, action) => {
+  switch (action.type) {
+    case QUESTION_STATS_REQUEST:
+      return {
+        loading: true,
+        questionStats: {},
+      };
+    case QUESTION_STATS_SUCCESS:
+      return {
+        loading: false,
+        questionStats: action.payload,
+      };
+    case QUESTION_STATS_FAIL:
       return {
         loading: false,
         error: action.payload,

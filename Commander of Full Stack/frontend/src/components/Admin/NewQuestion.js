@@ -33,6 +33,7 @@ const NewQuestion = () => {
   const [optionThree, setOptionThree] = useState("");
   const [optionFour, setOptionFour] = useState("");
   const [correctOption, setCorrectOption] = useState("");
+  const [marks, setMarks] = useState(0);
 
   useEffect(() => {
     if (error) {
@@ -78,9 +79,15 @@ const NewQuestion = () => {
     options.push({ value: optionThree });
     options.push({ value: optionFour });
 
+    if (marks <= 0) {
+      alert.error("Marks not valid");
+      return;
+    }
+
     const questionData = {
       title,
       correct: correctOption,
+      marks: marks,
       options,
     };
 
@@ -164,6 +171,17 @@ const NewQuestion = () => {
                 required
                 value={correctOption}
                 onChange={(e) => setCorrectOption(e.target.value)}
+              />
+            </div>
+
+            <div>
+              <SpellcheckIcon />
+              <input
+                type="number"
+                placeholder="Marks"
+                required
+                value={marks}
+                onChange={(e) => setMarks(e.target.value)}
               />
             </div>
 

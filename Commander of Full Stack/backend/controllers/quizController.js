@@ -11,8 +11,8 @@ module.exports.createQuiz = catchAsyncErrors(async (req, res, next) => {
   if (!title || !description || !author || !category) {
     return next(
       new ErrorHandler(
-        "Please send Quiz title, description,category and author.",
-        400
+        400,
+        "Please send Quiz title, description,category and author."
       )
     );
   }
@@ -38,7 +38,7 @@ module.exports.getAllQuizzes = catchAsyncErrors(async (req, res, next) => {
   const quizzes = await quizModel.find({ author: author });
 
   if (!quizzes) {
-    return next(new ErrorHandler(`Quizzes not found `, 404));
+    return next(new ErrorHandler(404, `Quizzes not found `));
   }
 
   return res.status(200).json({
@@ -55,7 +55,7 @@ module.exports.getQuizDetails = catchAsyncErrors(async (req, res, next) => {
   const quiz = await quizModel.findById(quizId);
 
   if (!quiz) {
-    return next(new ErrorHandler(`Quiz not found with id ${quizId}`, 404));
+    return next(new ErrorHandler(404, `Quiz not found with id ${quizId}`));
   }
 
   return res.status(200).json({
@@ -73,7 +73,7 @@ module.exports.updateQuiz = catchAsyncErrors(async (req, res, next) => {
   let quiz = await quizModel.findById(quizId);
 
   if (!quiz) {
-    return next(new ErrorHandler(`Quiz not found" with id ${quizId}`, 404));
+    return next(new ErrorHandler(404, `Quiz not found" with id ${quizId}`));
   }
 
   const newQuizData = {
@@ -103,7 +103,7 @@ module.exports.deleteQuiz = catchAsyncErrors(async (req, res, next) => {
   let quiz = await quizModel.findById(quizId);
 
   if (!quiz) {
-    return next(new ErrorHandler(`Quiz not found" with id ${quizId}`, 404));
+    return next(new ErrorHandler(404, `Quiz not found" with id ${quizId}`));
   }
 
   quiz.deleted = true;

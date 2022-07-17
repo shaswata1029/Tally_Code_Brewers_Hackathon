@@ -3,29 +3,33 @@ const quizModel = require("../models/quizModel");
 const userModel = require("../models/userModel");
 const ErrorHandler = require("../utils/errorhandler");
 const catchAsyncErrors = require("../middleware/catchAsyncErrors");
+const { shuffleArray } = require("../utils/shuffleArray");
 
 // Create new Question
 module.exports.createQuestion = catchAsyncErrors(async (req, res, next) => {
   const { quizId } = req.params;
-  const { title, correct, options } = req.body;
+  const { title, correct, options, marks } = req.body;
   const author = req.user._id;
 
   const quiz = await quizModel.findById(quizId);
 
   if (!quiz) {
-    return next(new ErrorHandler(`Quiz not found with id ${quizId}`, 404));
+    return next(new ErrorHandler(404, `Quiz not found with id ${quizId}`));
   }
 
-  if (!title || !correct || !options) {
+  if (!title || !correct || !options || !marks) {
     return next(
-      new ErrorHandler("Please send Quiz, title, correct, options array", 400)
+      new ErrorHandler(
+        400,
+        "Please send Quiz, title, correct, marks and  options array"
+      )
     );
   }
 
   options.forEach((option) => {
     if (!option.value) {
       return next(
-        new ErrorHandler("Please send all option with a value key in it.")
+        new ErrorHandler(400, "Please send all option with a value key in it.")
       );
     }
   });
@@ -35,6 +39,7 @@ module.exports.createQuestion = catchAsyncErrors(async (req, res, next) => {
     author: author,
     title,
     correct,
+    marks,
     options,
   });
 
@@ -51,21 +56,26 @@ module.exports.getAllQuestions = catchAsyncErrors(async (req, res, next) => {
   const quiz = await quizModel.findById(quizId);
 
   if (!quiz) {
-    return next(new ErrorHandler(`Quiz not found with id ${quizId}`, 404));
+    return next(new ErrorHandler(404, `Quiz not found with id ${quizId}`));
   }
 
   if (quiz.status !== "active") {
-    return next(new ErrorHandler(`Quiz not active now`, 404));
+    return next(new ErrorHandler(404, `Quiz not active now`));
   }
 
-  const questions = await questionModel
-    .find({ quiz: quizId })
-    .select("-correct");
+  let questions = await questionModel.find({ quiz: quizId }).select("-correct");
 
+  if (!questions || questions.length == 0) {
+    return next(
+      new ErrorHandler(404, `Questions not found for quiz with id ${quizId}`)
+    );
+  }
+
+  let newQuestions = shuffleArray(questions);
   return res.status(200).json({
     success: "success",
     message: "Questions successfully retrieved",
-    questions,
+    questions: newQuestions,
     author: quiz.author,
   });
 });
@@ -77,14 +87,20 @@ module.exports.getAllQuestionsWithAnswers = catchAsyncErrors(
     const quiz = await quizModel.findById(quizId);
 
     if (!quiz) {
-      return next(new ErrorHandler(`Quiz not found with id ${quizId}`, 404));
+      return next(new ErrorHandler(404, `Quiz not found with id ${quizId}`));
     }
 
     if (quiz.author != req.user._id) {
-      return next(new ErrorHandler(`Quiz not allowed to access`, 403));
+      return next(new ErrorHandler(403, `Quiz not allowed to access`));
     }
 
     const questions = await questionModel.find({ quiz: quizId });
+
+    if (!questions) {
+      return next(
+        new ErrorHandler(404, `Questions not found for quiz with id ${quizId}`)
+      );
+    }
 
     return res.status(200).json({
       success: "success",

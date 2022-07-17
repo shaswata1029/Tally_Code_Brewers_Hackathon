@@ -9,6 +9,9 @@ import {
   ALL_QUESTION_REQUEST,
   ALL_QUESTION_SUCCESS,
   ALL_QUESTION_FAIL,
+  QUESTION_STATS_REQUEST,
+  QUESTION_STATS_SUCCESS,
+  QUESTION_STATS_FAIL,
   CLEAR_ERRORS,
 } from "../constants/questionConstants";
 
@@ -76,6 +79,25 @@ export const getAllQuestions = (quizId) => async (dispatch) => {
   } catch (error) {
     dispatch({
       type: ALL_QUESTION_FAIL,
+      payload: error.response.data.message,
+    });
+  }
+};
+
+// Get statistics for a particular questions
+export const getQuestionStats = (questionId) => async (dispatch) => {
+  try {
+    dispatch({ type: QUESTION_STATS_REQUEST });
+
+    const { data } = await axios.get(`/api/v1/stats/question/${questionId}`);
+
+    dispatch({
+      type: QUESTION_STATS_SUCCESS,
+      payload: data.data,
+    });
+  } catch (error) {
+    dispatch({
+      type: QUESTION_STATS_FAIL,
       payload: error.response.data.message,
     });
   }
