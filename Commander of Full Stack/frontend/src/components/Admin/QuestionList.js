@@ -108,10 +108,6 @@ const QuestionList = () => {
       renderCell: (params) => {
         return (
           <>
-            <Link to={`/question/update/${params.getValue(params.id, "id")}`}>
-              <EditIcon />
-            </Link>
-
             <Link to={`/stats/${params.getValue(params.id, "id")}`}>
               <InsightsIcon />
             </Link>

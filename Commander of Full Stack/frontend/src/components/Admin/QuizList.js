@@ -10,12 +10,9 @@ import { DataGrid } from "@material-ui/data-grid";
 
 import { clearErrors, getAllQuizzes } from "../../actions/quizAction";
 
-// import { DELETE_PRODUCT_RESET } from "../../constants/productConstants";
-
 import { Button } from "@material-ui/core";
 import EditIcon from "@material-ui/icons/Edit";
 import AddIcon from "@mui/icons-material/Add";
-import DeleteIcon from "@material-ui/icons/Delete";
 import "./QuizList.css";
 
 const QuizList = () => {
@@ -25,35 +22,14 @@ const QuizList = () => {
 
   const { loading, error, quizzes } = useSelector((state) => state.quizzes);
 
-  //   const { error: deleteError, isDeleted } = useSelector(
-  //     (state) => state.product
-  //   );
-
   useEffect(() => {
     if (error) {
       alert.error(error);
       dispatch(clearErrors());
     }
 
-    // if (deleteError) {
-    //   alert.error(deleteError);
-    //   dispatch(clearErrors());
-    // }
-
-    // if (isDeleted) {
-    //   alert.success("Product Deleted Successfully");
-    //   navigate("/admin/dashboard");
-    //   dispatch({ type: DELETE_PRODUCT_RESET });
-    // }
-
     dispatch(getAllQuizzes());
   }, [alert, dispatch, error, navigate]);
-
-  //   const deleteProductHandler = (id) => {
-  //     if (window.confirm("Are you sure you want to delete this product?")) {
-  //       dispatch(deleteProduct(id));
-  //     }
-  //   };
 
   const columns = [
     { field: "id", headerName: "Quiz ID", minWidth: 200, flex: 0.5 },
@@ -102,15 +78,6 @@ const QuizList = () => {
             <Link to={`/questions/${params.getValue(params.id, "id")}`}>
               <AddIcon />
             </Link>
-
-            <Button
-              onClick={
-                () => {}
-                // deleteProductHandler(params.getValue(params.id, "id"))
-              }
-            >
-              <DeleteIcon />
-            </Button>
           </>
         );
       },

@@ -322,7 +322,7 @@ const StartQuiz = () => {
                     align="center"
                     style={{ marginTop: "1rem" }}
                   >
-                    Your ScoreCard is shown below
+                    Your ScoreCard :
                   </Typography>
 
                   <p>
