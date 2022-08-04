@@ -61,7 +61,7 @@ const StartQuiz = () => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [currentResponse, setCurrentResponse] = useState(" ");
   const [responses, setResponses] = useState([]);
-  const [seconds, setSeconds] = useState(60);
+  const [seconds, setSeconds] = useState(20);
 
   useEffect(() => {
     if (quizError) {
@@ -94,6 +94,18 @@ const StartQuiz = () => {
     quizId,
   ]);
 
+  useEffect(() => {
+    if (div2 === true) {
+      if (seconds > 0) {
+        const counter = setInterval(() => {
+          setSeconds(seconds - 1);
+        }, 1000);
+
+        return () => clearInterval(counter);
+      }
+    }
+  }, [div2, seconds]);
+
   const createQuizSubmitHandler = (e) => {
     e.preventDefault();
 
@@ -114,6 +126,7 @@ const StartQuiz = () => {
 
     setCurrentQuestion(currentQuestion + 1);
     setCurrentResponse(" ");
+    setSeconds(20);
   };
 
   const submitQuizHandler = (e) => {
@@ -227,7 +240,17 @@ const StartQuiz = () => {
 
           {div2 && (
             <>
-              <div style={{ marginTop: "5rem" }}>
+              <div style={{ marginTop: "1rem" }}>
+                <Typography variant="h4" align="center">
+                  {" "}
+                  {seconds > 0
+                    ? `Time Left : ${
+                        seconds < 10 ? `0${seconds}` : `${seconds}`
+                      } seconds`
+                    : `Time Over : 00 seconds`}
+                </Typography>
+              </div>
+              <div style={{ marginTop: "3rem" }}>
                 <form
                   className="createProductForm"
                   encType="multipart/form-data"
@@ -277,6 +300,7 @@ const StartQuiz = () => {
                                 value={currentOption.value}
                                 control={<Radio />}
                                 label={currentOption.value}
+                                disabled={seconds === 0 ? true : false}
                               />
                             )
                           )}
